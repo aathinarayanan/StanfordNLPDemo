@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>NLP Application</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+<body>
+	<form>
+		<div class="container">
+			<h3>Input: </h3>
+			<div class="form-group">
+				<textArea id="input" class="form-control" rows="3"></textArea>
+			</div>
+			<div class="form-group">
+				<label for="type">
+					<select class="form-control" id="type" onchange="nlp(this.value)">
+						<option value="">Select Type</option>
+						<option value="PERSON">Person</option>
+						<option value="CITY">City</option>
+						<option value="STATE_OR_PROVINCE">State or province</option>
+						<option value="COUNTRY">Country</option>
+						<option value="TITLE">Job Title</option>
+						<option value="EMAIL">Email</option>
+					</select>
+				</label>
+			</div>
+			<h3>NLP Output:</h3>
+			<div class="form-group" id="result"></div>
+		</div>
+	</form>
+	<script type="text/javascript">
+	function nlp(type){
+		var input = $("#input").val();
+		$.ajax({
+            type: 'POST',
+            url: "http://localhost:8080/api/v1/nlp?type="+type,
+            contentType: 'text/plain; charset=utf-8',
+            data: input,
+            success: function(response) {
+                var result = "";
+                $.each(response, function (index, value) {
+                    result = result + "<span class='badge badge-success'>"+ value + "</span>&nbsp;";
+                })
+                $("#result").html(result);
+            }
+         });
+		
+	}
+	</script> 
+
+</body>
+</html>
